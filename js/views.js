@@ -645,8 +645,6 @@
         return !n.read;
       case 'Сделки':
         return n.entity_type === 'FXDeal';
-      case 'Лимиты':
-        return /лимит/i.test(n.title || '') || /лимит/i.test(n.description || '');
       case 'Системные':
         return n.entity_type !== 'FXDeal';
       default:
