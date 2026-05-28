@@ -514,15 +514,20 @@
     );
     if (cancelBtn) {
       cancelBtn.removeAttribute('data-confirm');
+      if (deal.status !== 'DRAFT') {
+        cancelBtn.disabled = true;
+        cancelBtn.title = 'Отменить можно только черновик (DRAFT)';
+        return;
+      }
       cancelBtn.addEventListener('click', async (e) => {
         e.preventDefault();
         if (!confirm('Отменить сделку? Действие необратимо.')) return;
         try {
           await window.fxApi.deals.cancel(deal.id, 'Отменена через UI');
-          window.toast && window.toast('Сделка отменена', 'Статус: CANCELLED', 'info');
+          notify('Сделка отменена', 'Статус: CANCELLED', 'info');
           setTimeout(() => (location.href = 'deals.html'), 600);
         } catch (err) {
-          window.toast && window.toast('Не удалось отменить', err.message, 'danger');
+          notify('Не удалось отменить', err.message, 'danger');
         }
       });
     }
